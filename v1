@@ -1,0 +1,28 @@
+#include <SPI.h>
+#include "Adafruit_MAX31855.h"
+#include <Adafruit_MAX31865.h>
+// digital IO pins.
+#define MAXDO   12
+#define MAXCS   8
+#define MAXCLK  13
+#define RREF      430.0
+#define RNOMINAL  100.0
+// initialize the Thermocouple
+Adafruit_MAX31855 thermocouple(MAXCLK, MAXCS, MAXDO);
+Adafruit_MAX31865 max = Adafruit_MAX31865(9, 11, 12, 13);
+
+void setup() {
+  Serial.begin(9600);
+  max.begin(MAX31865_3WIRE);
+}
+void loop() {
+  // basic readout test, just print the current temp
+  uint16_t rtd = max.readRTD();
+   double c = thermocouple.readCelsius( );
+   
+     //Serial.print(c); 
+     Serial.print("k type ");Serial.println(c);
+     Serial.print("pt100 = "); Serial.println(max.temperature(RNOMINAL, RREF));
+   
+   delay(1000);
+}
